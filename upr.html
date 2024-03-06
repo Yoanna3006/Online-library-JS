@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library App</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Library App</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                background-image: linear-gradient(to left, rgb(0, 162, 255), rgb(87, 228, 151));
+            }
+
+            .all {
+                display: flex;
+                justify-content: center;
+            }
+
+            .add,
+            .SD {
+                display: inline-grid;
+                width: 25%;
+                padding: 0px 30px 20px 30px;
+                margin: 30px;
+                border: 2px solid black;
+                border-radius: 30px;
+            }
+
+            .SD>button,
+            .SD>input {
+                height: 50px;
+            }
+
+            input {
+                margin-bottom: 6px;
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 16px;
+                font-weight: bold;
+                background-color: rgb(182, 180, 180);
+            }
+
+            button:hover {
+                background-color: rgb(222, 216, 216);
+                cursor: pointer;
+            }
+
+            .add>h2 {
+                margin-bottom: -16px;
+                margin-top: 10px;
+            }
+
+            .SD>h2:first-of-type {
+                margin-bottom: 10px;
+                margin-top: 10px;
+            }
+
+            .SD>h2:last-of-type {
+                margin-top: -24px;
+                margin-bottom: 2px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Онлайн библиотека</h1>
+        <div class="all">
+            <div class="add">
+                <h2>Добави нова <br> книга</h2>
+                <input type="text" id="title" placeholder="Заглавие">
+                <input type="text" id="author" placeholder="Автор">
+                <input type="text" id="isbn" placeholder="Каталожен номер">
+                <button onclick="addBook()">Добави книга</button>
+            </div>
+            <div class="SD">
+                <h2>Търси книга</h2>
+                <input type="text" id="searchIsbn" placeholder="Търсене по каталожен номер">
+                <button onclick="searchBook()">Търси</button>
+                <p id="searchResult"></p>
+
+
+                <h2>Изтрий книга</h2>
+                <input type="text" id="deleteIsbn" placeholder="Изтриване по каталожен номер">
+                <button onclick="deleteBook()">Изтрий</button>
+            </div>
+        </div>
+        <script>
+            class Book {
+                //isbn -> каталожен номер
+                constructor(title, author, isbn) {
+                    this.title = title;
+                    this.author = author;
+                    this.isbn = isbn;
+                }
+            }
+
+            class Library {
+                constructor() {
+                    this.books = [];
+                }
+
+                addBook(book) {
+                    this.books.push(book);
+                }
+
+                findBookByIsbn(isbn) {
+                    return this.books.find(book => book.isbn === isbn);
+                }
+
+                deleteBook(isbn) {
+                    this.books = this.books.filter(book => book.isbn !== isbn);
+                }
+            }
+
+            const library = new Library();
+
+            function addBook() {
+                const title = document.getElementById('title').value;
+                const author = document.getElementById('author').value;
+                const isbn = document.getElementById('isbn').value;
+
+                const book = new Book(title, author, isbn);
+                library.addBook(book);
+                alert('Добавена книга!');
+            }
+
+            function searchBook() {
+                const isbn = document.getElementById('searchIsbn').value;
+                const book = library.findBookByIsbn(isbn);
+                const resultText = book ? "В наличност" : "Изчерпана";
+                document.getElementById('searchResult').innerText = resultText;
+            }
+
+            function deleteBook() {
+                const isbn = document.getElementById('deleteIsbn').value;
+                library.deleteBook(isbn);
+                alert('Изтрита книга!');
+            }
+
+        </script>
+    </body>
+
+    </html>
